@@ -1,0 +1,58 @@
+package com.busesred.consumer.location.config;
+
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class RabbitMQConfig {
+
+    @Value("${rabbitmq.exchange.location}")
+    private String exchangeName;
+
+    @Value("${rabbitmq.queue.location}")
+    private String queueName;
+
+    @Value("${rabbitmq.routing-key.location}")
+    private String routingKey;
+
+    @Bean
+    public Queue locationQueue() {
+        return new Queue(queueName, true);
+    }
+
+    @Bean
+    public TopicExchange locationExchange() {
+        return new TopicExchange(exchangeName);
+    }
+
+    @Bean
+    public Binding locationBinding() {
+        return BindingBuilder
+            .bind(locationQueue())
+            .to(locationExchange())
+            .with(routingKey);
+    }
+
+    @Bean
+    public MessageConverter jsonMessageConverter() {
+        return new Jackson2JsonMessageConverter();
+    }
+
+    @Bean
+    public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(
+            ConnectionFactory connectionFactory) {
+        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+        factory.setConnectionFactory(connectionFactory);
+        factory.setMessageConverter(jsonMessageConverter());
+        return factory;
+    }
+}

@@ -1,0 +1,51 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: consumer-location-buses-red
+  
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: admin
+    password: admin123
+    virtual-host: /
+  
+  datasource:
+    url: jdbc:oracle:thin:@${ORACLE_SERVICE_NAME}?TNS_ADMIN=/app/wallet
+    username: ${ORACLE_USERNAME:ADMIN}
+    password: ${ORACLE_PASSWORD:CloudNative_Brocker26#}
+    driver-class-name: oracle.jdbc.OracleDriver
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.OracleDialect
+        format_sql: true
+
+rabbitmq:
+  exchange:
+    location: location.exchange
+  queue:
+    location: location.queue
+  routing-key:
+    location: location.routing.key
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.busesred: DEBUG
+    org.springframework.amqp: DEBUG
+    org.hibernate.SQL: DEBUG

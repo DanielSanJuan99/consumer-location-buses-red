@@ -31,6 +31,11 @@ public class LocationConsumerService {
             busLocation.setRoute(locationMessage.getRoute());
             busLocation.setSpeed(locationMessage.getSpeed());
             
+            // Log para debugging
+            log.debug("Entidad antes de guardar - busId: {}, lat: {}, lon: {}, route: {}, speed: {}",
+                busLocation.getBusId(), busLocation.getLatitude(), busLocation.getLongitude(),
+                busLocation.getRoute(), busLocation.getSpeed());
+            
             // Guardar en base de datos
             BusLocation saved = locationRepository.save(busLocation);
             log.info("Ubicación guardada en Oracle DB con ID: {}", saved.getLocationId());

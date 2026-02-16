@@ -43,10 +43,10 @@ public class LocationConsumerController {
     @GetMapping("/health")
     public ResponseEntity<Map<String, String>> health() {
         Map<String, String> response = new HashMap<>();
-        response.put("status", "UP");
-        response.put("service", "consumer-location-buses-red");
-        response.put("timestamp", LocalDateTime.now().toString());
-        response.put("dbStatus", "Connected");
+        response.put("estado", "ACTIVO");
+        response.put("servicio", "consumer-location-buses-red");
+        response.put("marca_tiempo", LocalDateTime.now().toString());
+        response.put("estado_bd", "Conectada");
         return ResponseEntity.ok(response);
     }
 }

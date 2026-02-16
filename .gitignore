@@ -69,3 +69,5 @@ logs/
 
 # Spring Boot
 spring-boot-*.log
+
+Wallet/

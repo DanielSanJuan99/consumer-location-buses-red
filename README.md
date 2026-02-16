@@ -129,6 +129,28 @@ CREATE SEQUENCE bus_location_seq START WITH 1 INCREMENT BY 1;
 | `ORACLE_PASSWORD` | Contraseña Oracle | *(requerido)* |
 | `WALLET_PATH` | Ruta del Wallet dentro del contenedor | `/app/wallet` |
 
+## Configuración de Variables de Entorno
+
+El proyecto incluye un archivo `.env.example` con las variables necesarias:
+
+```bash
+# Copiar el archivo de ejemplo
+cp .env.example .env
+
+# Editar con tus valores (ORACLE_PASSWORD es obligatorio)
+nano .env
+```
+
+**Variables críticas sin valor por defecto:**
+
+| Variable | Requerida | Default en docker-compose | Descripción |
+|---|---|---|---|
+| `ORACLE_PASSWORD` | ⚠️ **Sí** | *(ninguno)* | Contraseña de Oracle Autonomous DB |
+| `RABBITMQ_USERNAME` | Sí | `admin` | Usuario RabbitMQ |
+| `RABBITMQ_PASSWORD` | Sí | `admin123` | Contraseña RabbitMQ |
+
+> **Importante:** `ORACLE_PASSWORD` **no tiene valor por defecto** en `docker-compose.yml`. Debe configurarse en un archivo `.env` en el mismo directorio del `docker-compose.yml` o exportarse como variable de entorno.
+
 ## Oracle Wallet
 
 El Wallet se monta como volumen en el contenedor:
